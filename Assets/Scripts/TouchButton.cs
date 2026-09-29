@@ -7,24 +7,28 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 public class TouchButton : XRBaseInteractable
 {
 
-    private NumberPad numberPad;
-    private int buttonNumber;
-    private Renderer changeMaterial;
-    private Material TouchedMaterial;
-    private Material NormalMaterial;
+    private string buttonNumber;
+    public NumberPad theNumberPad;
+    [Header("Keycard Data")]
+    public Material touchedMaterial;
+    public Material normalMaterial;
+
+    public void OnStart()
+    {
+        normalMaterial = this.GetComponent<MeshRenderer>().material;
+    }
 
     protected override void OnHoverEntered(HoverEnterEventArgs args)
     {
         base.OnHoverEntered(args);
-        changeMaterial.material = TouchedMaterial;
-        numberPad.ButtonPad(buttonNumber);
+        this.GetComponent<MeshRenderer>().material = touchedMaterial;
+        buttonNumber = gameObject.name;
+        theNumberPad.ButtonPad(buttonNumber);
 
     }
     protected override void OnHoverExited(HoverExitEventArgs args)
     {
         base.OnHoverExited(args);
-        changeMaterial.material = NormalMaterial;
-
-
+        this.GetComponent<MeshRenderer>().material = normalMaterial;
     }
 }

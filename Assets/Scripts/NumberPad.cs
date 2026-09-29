@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -7,40 +8,68 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class NumberPad : MonoBehaviour
 {
-    private GameObject keycardInstance;
-    readonly private int[] password = {1,2,3,4};
-    private int currentIndex;
-    private int[] enteredPassword = {0,0,0,0};
-
-    public TextMeshProUGUI InputDisplayText;  
+    private string Password = "1234";
+    private string currentPassword = "";
     [Header("Keycard Data")]
     public GameObject keycardPrefab;
     public Transform attachPoint;
     public TextMeshProUGUI CodeDisplayText;
 
-public void ButtonPad(int pressedValue)
-{
-    enteredPassword[currentIndex] = pressedValue;
-    currentIndex++;
-    CodeDisplayText.SetText(enteredPassword[0].ToString() + enteredPassword[1].ToString() + enteredPassword[2].ToString() + enteredPassword[3].ToString());
-
-    if (currentIndex < password.Length)
+    public void ButtonPad(string pressedValue)
     {
-        ;
-    }
+        currentPassword += pressedValue;
+        CodeDisplayText.SetText("Password" + currentPassword);
 
-    for (int i = 0; i < password.Length; i++)
-    {
-        if (enteredPassword[i] != password[i])
+        if (currentPassword.Length == Password.Length)
         {
-            CodeDisplayText.SetText("Incorrect Code");
-            currentIndex = 0;
-            System.Array.Clear(enteredPassword, 0, enteredPassword.Length);
-            return;
+            if (currentPassword == Password)
+            {
+                Instantiate(keycardPrefab, attachPoint.position, attachPoint.rotation);
+            }
+            else
+            {
+                CodeDisplayText.SetText("Incorrect Code");
+                currentPassword = null;
+            }
         }
-    }
+    } 
+}
+    /*
+    protected void 
 
-    keycardInstance = Instantiate(keycardPrefab, attachPoint.position, attachPoint.rotation);
+    private GameObject keycardInstance;
+    readonly private int[] password = {1,2,3,4};
+    private int currentIndex;
+    private int[] enteredPassword = {0,0,0,0};
+ 
+    [Header("Keycard Data")]
+
+    public Transform attachPoint;
+    public TextMeshProUGUI CodeDisplayText;
+
+    public void ButtonPad(int pressedValue)
+    {
+        enteredPassword[currentIndex] = pressedValue;
+        currentIndex++;
+        CodeDisplayText.SetText(enteredPassword[0].ToString() + enteredPassword[1].ToString() + enteredPassword[2].ToString() + enteredPassword[3].ToString());
+
+        if (currentIndex == password.Length)
+        {
+
+            for (int i = 0; i < password.Length; i++)
+            {
+                if (enteredPassword[i] != password[i])
+                {
+                    CodeDisplayText.SetText("Incorrect Code");
+                    currentIndex = 0;
+                }
+                else
+                {
+                    keycardInstance = Instantiate(keycardPrefab, attachPoint.position, attachPoint.rotation);
+                    currentIndex = 0;
+                }
+            }
+        }
     currentIndex = 0;
 }
     
@@ -54,3 +83,4 @@ public void ButtonPad(int pressedValue)
 // If the password is equal to the correct array password, then call the keycard
 // if the password isn't equal, then reset the script
 
+*/
