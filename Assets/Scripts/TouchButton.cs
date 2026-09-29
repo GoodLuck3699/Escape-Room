@@ -6,27 +6,24 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class TouchButton : XRBaseInteractable
 {
-    [Header("Buttons")]
-    public Transform attachPoint;
-    public NumberPad balloonPrefab;
 
-    private NumberPad buttonNumber;
+    private NumberPad numberPad;
+    private int buttonNumber;
+    private Renderer changeMaterial;
     private Material TouchedMaterial;
     private Material NormalMaterial;
 
     protected override void OnHoverEntered(HoverEnterEventArgs args)
     {
         base.OnHoverEntered(args);
-        buttonNumber = new NumberPad();
-        NumberPad.Material = TouchedMaterial;
-        NumberPad.Sequence(NumberPad buttonNumber);
+        changeMaterial.material = TouchedMaterial;
+        numberPad.ButtonPad(buttonNumber);
 
     }
-    protected override void OnHoverExited(HoverEnterEventArgs args)
+    protected override void OnHoverExited(HoverExitEventArgs args)
     {
-        base.OnHoverEntered(args);
-        buttonNumber = new NumberPad();
-        NumberPad.Material = NormalMaterial;
+        base.OnHoverExited(args);
+        changeMaterial.material = NormalMaterial;
 
 
     }
