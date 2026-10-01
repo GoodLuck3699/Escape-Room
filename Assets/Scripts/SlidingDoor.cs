@@ -1,22 +1,37 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class Slidingdoor : XRBaseInteractable
 {
-    public Transform transfromDoor;
-    
-    public Vector3 position;
-
+    public Transform transformDoor;
+    public float maxDistance;
+    public Vector3 localDirection;
+    public Vector3 globalDirection;
+    public GameObject doorPrefab;
+    private Vector3 startPosition;
+    private Vector3 endPosition;
     void Start()
     {
-        //transform of the ahdn
-        //position of the door
-        //If dot product of the two is less than 0.5, then the door is not valid
+        maxDistance = 1;
+        globalDirection = Vector3.forward;
+        transformDoor = doorPrefab.transform;
+        startPosition = transformDoor.position;
+        endPosition = startPosition + (globalDirection * maxDistance);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
     {
-        
+        if (isSelected)
+        {
+            var interactorPos = firstInteractorSelecting.GetAttachTransform(this);
+            Vector3 currentDistance = interactorPos.position - startPosition;
+            var speed = Vector3.Dot(currentDistance, globalDirection);
+            float actualSpeed = -(speed) * Time.deltaTime;
+            Debug.Log("endPosition" + endPosition);
+            Debug.Log("startPosition" + startPosition);
+            Debug.Log("gobalDirection" + globalDirection);
+            this.transform.parent.position = Vector3.MoveTowards(startPosition, endPosition, actualSpeed);
+        }
     }
 }

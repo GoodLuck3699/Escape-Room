@@ -14,6 +14,7 @@ public class CardReader : XRSocketInteractor
     public GameObject DoorLockPrefab;
 
 
+
     public override bool CanSelect(IXRSelectInteractable interactable)
     {
         return false;
@@ -42,7 +43,7 @@ public class CardReader : XRSocketInteractor
     {
         Vector3 readerUp = transform.up;
         Vector3 worldUp = Vector3.up;
-        if (Vector3.Dot(readerUp, worldUp) < 0.5f)
+        if (Vector3.Dot(readerUp.normalized, worldUp.normalized) > 0.5f)
         {
             isValid = false;
         }
