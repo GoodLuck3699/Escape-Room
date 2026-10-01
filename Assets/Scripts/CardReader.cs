@@ -5,12 +5,14 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class CardReader : XRSocketInteractor
 {
-    [Header("Keycard Data")]
-    public GameObject keycardPrefab;
-    Transform cardTransform;
-    Vector2 cardPosition;
-    bool isValid;
-    Vector3 distance;
+    private Transform cardTransform;
+    private Vector3 InitialPosition;
+    private Vector3 Distance;
+    private bool isValid;
+    [Header("Studd I need")]
+    public GameObject cardreaderPrefab;
+    public GameObject DoorLockPrefab;
+
 
     public override bool CanSelect(IXRSelectInteractable interactable)
     {
@@ -20,8 +22,8 @@ public class CardReader : XRSocketInteractor
     protected override void OnHoverEntered(HoverEnterEventArgs args)
     {
         base.OnHoverEntered(args);
-        cardTransform = keycardPrefab.transform;
-        Vector2 cardPosition = cardTransform.position;
+        cardTransform = cardreaderPrefab.transform;
+        InitialPosition = cardTransform.position;
         isValid = true;
 
     }
@@ -29,6 +31,20 @@ public class CardReader : XRSocketInteractor
     protected override void OnHoverExited(HoverExitEventArgs args)
     {
         base.OnHoverExited(args);
-        
+        Vector3 Distance = cardTransform.position - InitialPosition;
+        if (isValid == true && Distance.magnitude > 0.1f)
+        {
+            DoorLockPrefab.SetActive(false);
+        }
+    }
+
+    public void Update()
+    {
+        Vector3 readerUp = transform.up;
+        Vector3 worldUp = Vector3.up;
+        if (Vector3.Dot(readerUp, worldUp) < 0.5f)
+        {
+            isValid = false;
+        }
     }
 }
