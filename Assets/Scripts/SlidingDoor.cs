@@ -27,11 +27,13 @@ public class Slidingdoor : XRBaseInteractable
             var interactorPos = firstInteractorSelecting.GetAttachTransform(this);
             Vector3 currentDistance = interactorPos.position - startPosition;
             var speed = Vector3.Dot(currentDistance, globalDirection);
-            float actualSpeed = -(speed) * Time.deltaTime;
+            float actualSpeed = (speed) * Time.deltaTime;
             Debug.Log("endPosition" + endPosition);
             Debug.Log("startPosition" + startPosition);
             Debug.Log("gobalDirection" + globalDirection);
-            this.transform.parent.position = Vector3.MoveTowards(startPosition, endPosition, actualSpeed);
+            
+            this.transform.parent.position = new Vector3(this.transform.parent.position.x, this.transform.parent.position.y, this.transform.parent.position.z + actualSpeed);
+            //this.transform.parent.position = Vector3.MoveTowards(startPosition, endPosition, actualSpeed);
         }
     }
 }
